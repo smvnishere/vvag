@@ -58,23 +58,54 @@ $references = [
 // 'icon' alanı inline SVG anahtarıdır (index.php içinde eşleşir).
 $services = [
     [
-        'title' => 'Fabrika & Tesis Güvenlik Ağları',
-        'desc'  => 'Üretim tesisleri, depolar ve raf sistemleri için düşme ve malzeme düşmesine karşı koruyucu ağ montajı.',
-        'icon'  => 'net',
+        'title'   => 'Fabrika & Tesis Güvenlik Ağları',
+        'desc'    => 'Üretim tesisleri, depolar ve raf sistemleri için düşme ve malzeme düşmesine karşı koruyucu ağ montajı.',
+        'icon'    => 'net',
+        'details' => "Üretim tesislerinde çalışan güvenliği ve ürün koruması için tavan altı, raf arkası ve platform kenarı ağ sistemleri kuruyoruz. Keşif sonrası tesise özel ölçülendirme yapılır; ağlar TS EN 1263-1 standardına uygun malzeme ile monte edilir.\n\n• Raf arkası malzeme düşme koruma ağları\n• Tavan altı ve asma kat koruma sistemleri\n• Platform ve yürüyüş yolu kenar ağları\n• Makine çevresi ayırıcı file uygulamaları",
     ],
     [
-        'title' => 'İnşaat Güvenlik Ağları',
-        'desc'  => 'Şantiyelerde yatay ve dikey güvenlik ağı kurulumu; cephe, döşeme kenarı ve boşluk korumaları.',
-        'icon'  => 'frame',
+        'title'   => 'İnşaat Güvenlik Ağları',
+        'desc'    => 'Şantiyelerde yatay ve dikey güvenlik ağı kurulumu; cephe, döşeme kenarı ve boşluk korumaları.',
+        'icon'    => 'frame',
+        'details' => "Şantiyelerde yüksekten düşmeye karşı yatay (catch net) ve dikey (cephe) güvenlik ağı sistemleri uyguluyoruz. Kurulum, İSG mevzuatı ve şantiye iş programı ile uyumlu şekilde planlanır.\n\n• Döşeme kenarı ve cephe koruma ağları\n• Kat aralarında yatay güvenlik ağları\n• Şaft ve boşluk kapatma uygulamaları\n• Söküm ve kat ilerledikçe yeniden kurulum hizmeti",
     ],
     [
-        'title' => 'Merdiven & Asansör Boşluğu Ağları',
-        'desc'  => 'Bina içi merdiven ve asansör boşluklarında standartlara uygun düşüş önleyici ağ uygulaması.',
-        'icon'  => 'shield',
+        'title'   => 'Merdiven & Asansör Boşluğu Ağları',
+        'desc'    => 'Bina içi merdiven ve asansör boşluklarında standartlara uygun düşüş önleyici ağ uygulaması.',
+        'icon'    => 'shield',
+        'details' => "Bina içi merdiven boşlukları ile asansör kuyularında düşme riskini ortadan kaldıran ağ sistemleri kuruyoruz. Konut, ofis ve endüstriyel yapılarda hem geçici (inşaat süreci) hem kalıcı çözümler sunuyoruz.\n\n• Merdiven boşluğu düşüş önleyici ağlar\n• Asansör kuyusu geçici koruma sistemleri\n• Galeri ve atrium boşluğu ağları\n• Estetik, mimariyle uyumlu kalıcı uygulamalar",
     ],
     [
-        'title' => 'Bakım & Periyodik Kontrol',
-        'desc'  => 'Mevcut ağ sistemlerinin kontrolü, yıpranan filelerin değişimi ve sezonluk bakım hizmetleri.',
-        'icon'  => 'wrench',
+        'title'   => 'Bakım & Periyodik Kontrol',
+        'desc'    => 'Mevcut ağ sistemlerinin kontrolü, yıpranan filelerin değişimi ve sezonluk bakım hizmetleri.',
+        'icon'    => 'wrench',
+        'details' => "Kurulu ağ sistemleri zamanla UV, hava koşulları ve mekanik yük nedeniyle mukavemet kaybeder. Periyodik kontrol programımızla ağlarınızın koruma kapasitesini sürekli standart seviyesinde tutuyoruz.\n\n• Yıllık / 6 aylık periyodik kontrol raporlaması\n• Yıpranan file ve halat değişimi\n• Bağlantı elemanı ve ankraj kontrolü\n• Acil müdahale ve onarım hizmeti",
     ],
 ];
+
+// ============================================================
+//  GELİŞMİŞ AYARLAR (v2 - DB / SMTP / reCAPTCHA)
+// ============================================================
+
+// --- Veritabanı (SQLite) ---
+// Render'da Persistent Disk kullanıyorsan mount noktasını
+// DB_DIR env değişkeni ile ver (örn: /var/data). Verilmezse
+// proje içindeki data/ klasörü kullanılır (deploy'da sıfırlanır!).
+define('DB_DIR',  getenv('DB_DIR') ?: __DIR__ . '/data');
+define('DB_PATH', DB_DIR . '/quotes.sqlite');
+
+// --- SMTP (PHPMailer) ---
+// Bilgileri env değişkenlerinden okur; yoksa buradaki varsayılanlar.
+// Env kullanmak Render'da en doğru yöntem (Environment > Add Variable).
+define('SMTP_HOST',   getenv('SMTP_HOST')   ?: 'smtp.example.com');
+define('SMTP_PORT',   (int)(getenv('SMTP_PORT') ?: 587));
+define('SMTP_USER',   getenv('SMTP_USER')   ?: 'no-reply@vuralag.com');
+define('SMTP_PASS',   getenv('SMTP_PASS')   ?: '');
+define('SMTP_SECURE', getenv('SMTP_SECURE') ?: 'tls'); // 'tls' (587) veya 'ssl' (465)
+
+// --- Google reCAPTCHA v3 ---
+// Key'ler boşsa sistem otomatik devre dışı kalır, form yine çalışır.
+// https://www.google.com/recaptcha/admin adresinden v3 key al.
+define('RECAPTCHA_SITE_KEY',   getenv('RECAPTCHA_SITE_KEY')   ?: '');
+define('RECAPTCHA_SECRET_KEY', getenv('RECAPTCHA_SECRET_KEY') ?: '');
+define('RECAPTCHA_MIN_SCORE',  0.5); // 0-1 arası; düşük skor = bot şüphesi

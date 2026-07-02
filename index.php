@@ -11,12 +11,10 @@
  * ============================================================
  */
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/includes/csrf.php'; // CSRF token üretimi için
 $page_title = SITE_NAME . ' — ' . SITE_TAGLINE;
-require 'header.php';
-
-// Form gönderimi sonrası contact-handler.php buraya ?form=... ile yönlendirir
-$form_status = $_GET['form'] ?? null;
+require __DIR__ . '/header.php';
 ?>
 
 <!-- ============================================================
@@ -72,10 +70,11 @@ $form_status = $_GET['form'] ?? null;
 
         <div class="mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-mist border border-mist rounded-xl overflow-hidden">
             <?php foreach ($references as $ref): ?>
-                <div class="bg-white flex items-center justify-center h-32 px-6 group">
+                <div class="bg-white flex items-center justify-center h-32 px-6 group ref-cell">
                     <img src="<?php echo $ref['logo']; ?>"
                          alt="<?php echo htmlspecialchars($ref['name']); ?>"
-                         class="max-h-12 w-auto grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition duration-300"
+                         loading="lazy" decoding="async" width="160" height="48"
+                         class="ref-logo max-h-12 w-auto grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
                          onerror="this.outerHTML='<span class=\'font-display font-semibold text-gray-400 group-hover:text-ink transition-colors\'><?php echo htmlspecialchars($ref['name']); ?></span>';">
                 </div>
             <?php endforeach; ?>
@@ -108,9 +107,9 @@ $form_status = $_GET['form'] ?? null;
                 'wrench' => '<path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/>',
             ];
             ?>
-            <?php foreach ($services as $service): ?>
-                <article class="bg-white rounded-xl border border-mist p-7 hover:border-signal hover:shadow-lg hover:shadow-signal/5 transition duration-300">
-                    <div class="h-12 w-12 rounded-lg bg-midnight flex items-center justify-center mb-6">
+            <?php foreach ($services as $i => $service): ?>
+                <article class="service-card bg-white rounded-xl border border-mist p-7 hover:border-signal hover:shadow-lg hover:shadow-signal/10 flex flex-col">
+                    <div class="service-icon h-12 w-12 rounded-lg bg-midnight flex items-center justify-center mb-6">
                         <svg class="h-6 w-6 text-signal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <?php echo $icons[$service['icon']] ?? $icons['net']; ?>
                         </svg>
@@ -118,9 +117,17 @@ $form_status = $_GET['form'] ?? null;
                     <h3 class="font-display font-semibold text-lg text-ink mb-2">
                         <?php echo htmlspecialchars($service['title']); ?>
                     </h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
+                    <p class="text-sm text-gray-600 leading-relaxed flex-1">
                         <?php echo htmlspecialchars($service['desc']); ?>
                     </p>
+                    <!-- Modal tetikleyici: içerik JS'e data attribute ile taşınır -->
+                    <button type="button"
+                            class="service-detail-btn mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-signal hover:text-signalDim transition-colors self-start"
+                            data-title="<?php echo htmlspecialchars($service['title']); ?>"
+                            data-details="<?php echo htmlspecialchars($service['details']); ?>">
+                        Detayları Gör
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+                    </button>
                 </article>
             <?php endforeach; ?>
         </div>
@@ -142,17 +149,13 @@ $form_status = $_GET['form'] ?? null;
             Formu doldurun, ekibimiz en kısa sürede size dönüş yapsın.
         </p>
 
-        <?php if ($form_status === 'success'): ?>
-            <div class="mt-8 rounded-lg border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-800">
-                Talebiniz alındı. En kısa sürede size dönüş yapacağız.
-            </div>
-        <?php elseif ($form_status === 'error'): ?>
-            <div class="mt-8 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800">
-                Form gönderilemedi. Lütfen tüm alanları kontrol edip tekrar deneyin.
-            </div>
-        <?php endif; ?>
+        <!-- Dinamik durum mesajı (AJAX yanıtına göre JS doldurur) -->
+        <div id="form-status" class="status-hidden mt-8 hidden rounded-lg border px-4 py-3 text-sm" role="alert" aria-live="polite"></div>
 
-        <form action="contact-handler.php" method="POST" class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <form id="quote-form" action="contact-handler.php" method="POST" novalidate
+              class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- CSRF koruması -->
+            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
             <!-- Bot koruması (honeypot): İnsanlar bu alanı görmez, botlar doldurur -->
             <input type="text" name="website" tabindex="-1" autocomplete="off"
                    class="hidden" aria-hidden="true">
@@ -183,13 +186,142 @@ $form_status = $_GET['form'] ?? null;
                           class="w-full rounded-md border border-mist bg-fog px-4 py-2.5 text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none transition resize-y"></textarea>
             </div>
             <div class="sm:col-span-2">
-                <button type="submit"
-                        class="w-full sm:w-auto inline-flex justify-center items-center rounded-md bg-signal hover:bg-signalDim px-8 py-3 text-base font-semibold text-white transition-colors">
-                    Teklif Talebi Gönder
+                <button type="submit" id="quote-submit"
+                        class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-md bg-signal hover:bg-signalDim px-8 py-3 text-base font-semibold text-white transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                    <span id="quote-submit-text">Teklif Talebi Gönder</span>
+                    <!-- Yükleniyor spinner'ı (JS gösterir/gizler) -->
+                    <svg id="quote-spinner" class="hidden h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                    </svg>
                 </button>
             </div>
         </form>
     </div>
 </section>
+
+<!-- ============================================================
+     HİZMET DETAY MODALI
+     Tek bir modal; içerik "Detayları Gör" butonlarındaki
+     data attribute'lardan JS ile doldurulur.
+============================================================= -->
+<div id="service-modal" class="modal-hidden fixed inset-0 z-[60] hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <!-- Arka plan karartması -->
+    <div class="modal-backdrop absolute inset-0 bg-ink/70 backdrop-blur-sm" data-modal-close></div>
+    <!-- Panel -->
+    <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+        <div class="modal-panel pointer-events-auto w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="flex items-start justify-between gap-4 px-7 pt-7">
+                <h3 id="modal-title" class="font-display font-bold text-xl text-ink"></h3>
+                <button type="button" data-modal-close aria-label="Kapat"
+                        class="shrink-0 rounded-md p-1.5 text-gray-400 hover:text-ink hover:bg-fog transition-colors">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="modal-body" class="px-7 py-5 text-sm text-gray-600 leading-relaxed whitespace-pre-line max-h-[60vh] overflow-y-auto"></div>
+            <div class="px-7 pb-7">
+                <a href="#iletisim-form" data-modal-close
+                   class="inline-flex items-center rounded-md bg-signal hover:bg-signalDim px-5 py-2.5 text-sm font-semibold text-white transition-colors">
+                    Bu hizmet için teklif al
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     SAYFA JAVASCRIPT'İ (AJAX form + Modal)
+============================================================= -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* ---------- 1. AJAX TEKLİF FORMU ---------- */
+    const form     = document.getElementById('quote-form');
+    const status   = document.getElementById('form-status');
+    const btn      = document.getElementById('quote-submit');
+    const btnText  = document.getElementById('quote-submit-text');
+    const spinner  = document.getElementById('quote-spinner');
+    const SITE_KEY = <?php echo json_encode(RECAPTCHA_SITE_KEY); ?>;
+
+    // Durum mesajını yumuşak geçişle göster
+    function showStatus(ok, msg) {
+        status.textContent = msg;
+        status.className = 'mt-8 rounded-lg border px-4 py-3 text-sm ' +
+            (ok ? 'border-green-300 bg-green-50 text-green-800'
+                : 'border-red-300 bg-red-50 text-red-800');
+        // Geçiş animasyonu için iki adımda class değişimi
+        status.classList.add('status-hidden');
+        requestAnimationFrame(() => status.classList.remove('status-hidden'));
+        status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function setLoading(loading) {
+        btn.disabled = loading;
+        spinner.classList.toggle('hidden', !loading);
+        btnText.textContent = loading ? 'Gönderiliyor...' : 'Teklif Talebi Gönder';
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Sayfa yenilenmesini engelle
+        setLoading(true);
+
+        try {
+            const data = new FormData(form);
+
+            // reCAPTCHA v3 aktifse token al ve isteğe ekle
+            if (SITE_KEY && window.grecaptcha) {
+                await new Promise(res => grecaptcha.ready(res));
+                const token = await grecaptcha.execute(SITE_KEY, { action: 'quote' });
+                data.append('recaptcha_token', token);
+            }
+
+            const res  = await fetch(form.action, { method: 'POST', body: data });
+            const json = await res.json();
+
+            showStatus(json.success, json.message);
+            if (json.success) form.reset();
+
+        } catch (err) {
+            showStatus(false, 'Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+        } finally {
+            setLoading(false);
+        }
+    });
+
+    /* ---------- 2. HİZMET DETAY MODALI ---------- */
+    const modal      = document.getElementById('service-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody  = document.getElementById('modal-body');
+    let lastFocused  = null;
+
+    function openModal(title, details) {
+        lastFocused = document.activeElement;
+        modalTitle.textContent = title;
+        modalBody.textContent  = details;
+        modal.classList.remove('hidden');
+        // Bir frame sonra animasyon class'ını kaldır -> yumuşak açılış
+        requestAnimationFrame(() => modal.classList.remove('modal-hidden'));
+        document.body.style.overflow = 'hidden'; // Arka plan scroll kilidi
+    }
+
+    function closeModal() {
+        modal.classList.add('modal-hidden');
+        document.body.style.overflow = '';
+        // Geçiş bitince tamamen gizle
+        setTimeout(() => modal.classList.add('hidden'), 250);
+        if (lastFocused) lastFocused.focus();
+    }
+
+    document.querySelectorAll('.service-detail-btn').forEach(b =>
+        b.addEventListener('click', () => openModal(b.dataset.title, b.dataset.details))
+    );
+    modal.querySelectorAll('[data-modal-close]').forEach(el =>
+        el.addEventListener('click', closeModal)
+    );
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+    });
+});
+</script>
 
 <?php require 'footer.php'; ?>

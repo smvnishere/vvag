@@ -65,6 +65,11 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
         };
     </script>
 
+    <?php if (defined('RECAPTCHA_SITE_KEY') && RECAPTCHA_SITE_KEY !== ''): ?>
+    <!-- Google reCAPTCHA v3 (görünmez) - key config'te tanımlıysa yüklenir -->
+    <script src="https://www.google.com/recaptcha/api.js?render=<?php echo RECAPTCHA_SITE_KEY; ?>" defer></script>
+    <?php endif; ?>
+
     <style>
         /* Hero'daki teknik çizim hissi veren ince ızgara deseni */
         .blueprint-grid {
@@ -73,6 +78,41 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
                 linear-gradient(90deg, rgba(61,125,216,0.07) 1px, transparent 1px);
             background-size: 48px 48px;
         }
+
+        /* --- Hizmet kartı hover: yumuşak kalkma + ikon canlanması --- */
+        .service-card {
+            transition: transform .35s cubic-bezier(.22,.61,.36,1),
+                        box-shadow .35s ease, border-color .35s ease;
+            will-change: transform;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+        }
+        .service-card .service-icon {
+            transition: transform .35s cubic-bezier(.34,1.56,.64,1), background-color .35s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.08) rotate(-4deg);
+        }
+
+        /* --- Referans logoları hover: gri -> renkli + hafif büyüme --- */
+        .ref-logo { transition: transform .3s ease, filter .3s ease, opacity .3s ease; }
+        .ref-cell:hover .ref-logo { transform: scale(1.06); }
+
+        /* --- Modal geçişleri --- */
+        .modal-backdrop {
+            transition: opacity .25s ease;
+        }
+        .modal-panel {
+            transition: opacity .25s ease, transform .25s cubic-bezier(.22,.61,.36,1);
+        }
+        .modal-hidden .modal-backdrop { opacity: 0; }
+        .modal-hidden .modal-panel   { opacity: 0; transform: translateY(16px) scale(.98); }
+
+        /* --- Form durum mesajı geçişi --- */
+        #form-status { transition: opacity .3s ease, transform .3s ease; }
+        #form-status.status-hidden { opacity: 0; transform: translateY(-4px); }
+
         /* Hareket azaltma tercihi olan kullanıcılar için animasyonları kapat */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { transition: none !important; animation: none !important; }
