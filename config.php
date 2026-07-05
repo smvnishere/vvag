@@ -26,7 +26,7 @@ define('CONTACT_EMAIL',   'info@vuralag.com');
 define('CONTACT_ADDRESS', 'Organize Sanayi Bölgesi, 1. Cadde No: 00, Sincan / Ankara');
 
 // --- Form gönderimlerinin ulaşacağı e-posta ---
-define('FORM_RECIPIENT', 'teklif@vuralag.com');
+define('FORM_RECIPIENT', 'smvnhere@gmail.com');
 
 // --- Sosyal Medya (boş bırakılan gösterilmez) ---
 $social_links = [
