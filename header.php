@@ -43,17 +43,18 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
             theme: {
                 extend: {
                     colors: {
-                        // Antrasit / koyu gri tonları
-                        ink:      '#15181D',   // En koyu zemin (footer, hero)
-                        anthracite:'#1E232B',  // Kart / panel zemini
-                        steel:    '#2A3038',   // Kenarlık, ayraç
-                        // Gece mavisi tonları
-                        midnight: '#0E1A2B',   // Hero degrade ucu
-                        signal:   '#3D7DD8',   // Vurgu mavisi (buton, link)
-                        signalDim:'#2C5FA8',   // Vurgu hover
-                        // Açık alanlar
-                        fog:      '#F4F5F7',   // Açık bölüm zemini
-                        mist:     '#E6E8EC',   // Açık kenarlık
+                        // Derin füme / slate tonları (siyah değil, derinlikli koyu gri)
+                        abyss:     '#0B0E13',   // Sayfa zemini (en derin ton)
+                        ink:       '#12161D',   // Nav, footer, ara bölümler
+                        anthracite:'#1B212B',   // Kart / panel / form zemini
+                        steel:     '#2B333F',   // Kenarlık, ayraç
+                        midnight:  '#0E141D',   // Degrade ucu
+                        // Vurgu: Güvenlik Turuncusu (Safety Orange)
+                        signal:    '#FF7A00',   // Buton, link, ikon
+                        signalDim: '#FF9633',   // Hover (daha parlak varyant)
+                        // Açık tonlar (nadiren, kontrast gereken yerlerde)
+                        fog:       '#F4F5F7',
+                        mist:      '#E6E8EC',
                     },
                     fontFamily: {
                         display: ['Saira', 'sans-serif'],
@@ -71,38 +72,66 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
     <?php endif; ?>
 
     <style>
-        /* Hero'daki teknik çizim hissi veren ince ızgara deseni */
+        /* Hero'daki teknik çizim hissi veren ince ızgara deseni (turuncu tint) */
         .blueprint-grid {
             background-image:
-                linear-gradient(rgba(61,125,216,0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(61,125,216,0.07) 1px, transparent 1px);
+                linear-gradient(rgba(255,122,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,122,0,0.05) 1px, transparent 1px);
             background-size: 48px 48px;
         }
 
-        /* --- Hizmet kartı hover: yumuşak kalkma + ikon canlanması --- */
+        /* --- Vurgu butonu: hover'da turuncu dış ışıma (glow) --- */
+        .btn-glow {
+            transition: transform .3s cubic-bezier(.22,.61,.36,1),
+                        box-shadow .3s ease, background-color .3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(255,122,0,.45), 0 4px 16px rgba(0,0,0,.4);
+        }
+
+        /* --- Hizmet kartı: kalkma + turuncu dış ışıma --- */
         .service-card {
             transition: transform .35s cubic-bezier(.22,.61,.36,1),
-                        box-shadow .35s ease, border-color .35s ease;
+                        box-shadow .35s ease, border-color .35s ease,
+                        background-color .35s ease;
             will-change: transform;
         }
         .service-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px); /* -translate-y-2 */
+            box-shadow: 0 24px 48px -16px rgba(0,0,0,.65),
+                        0 0 28px rgba(255,122,0,.14);
         }
         .service-card .service-icon {
             transition: transform .35s cubic-bezier(.34,1.56,.64,1), background-color .35s ease;
         }
         .service-card:hover .service-icon {
-            transform: scale(1.08) rotate(-4deg);
+            transform: scale(1.06) rotate(-3deg);
         }
 
-        /* --- Referans logoları hover: gri -> renkli + hafif büyüme --- */
-        .ref-logo { transition: transform .3s ease, filter .3s ease, opacity .3s ease; }
-        .ref-cell:hover .ref-logo { transform: scale(1.06); }
+        /* --- Referans logoları: gri %50 -> renkli %100, pürüzsüz geçiş --- */
+        .ref-logo {
+            filter: grayscale(1);
+            opacity: .5;
+            transition: filter .35s ease, opacity .35s ease, transform .35s ease;
+        }
+        .ref-logo:hover {
+            filter: grayscale(0);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        /* --- Premium form inputları: kenarlıksız, focus'ta turuncu aydınlanma --- */
+        .premium-input {
+            border: 2px solid transparent; /* Layout shift olmasın diye şeffaf tutulur */
+            transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
+        }
+        .premium-input:focus {
+            border-color: #FF7A00;
+            box-shadow: 0 0 0 4px rgba(255,122,0,.12), 0 0 20px rgba(255,122,0,.10);
+        }
 
         /* --- Modal geçişleri --- */
-        .modal-backdrop {
-            transition: opacity .25s ease;
-        }
+        .modal-backdrop { transition: opacity .25s ease; }
         .modal-panel {
             transition: opacity .25s ease, transform .25s cubic-bezier(.22,.61,.36,1);
         }
@@ -120,7 +149,7 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
     </style>
 </head>
 
-<body class="font-body bg-fog text-ink antialiased">
+<body class="font-body bg-abyss text-gray-200 antialiased">
 
 <!-- ============================================================
      NAVBAR
@@ -155,7 +184,7 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
             <?php endforeach; ?>
             <li>
                 <a href="index.php#iletisim"
-                   class="inline-flex items-center rounded-md bg-signal hover:bg-signalDim px-4 py-2 text-sm font-semibold text-white transition-colors">
+                   class="btn-glow inline-flex items-center rounded-md bg-signal hover:bg-signalDim px-4 py-2 text-sm font-bold text-abyss">
                     Teklif Al
                 </a>
             </li>
@@ -184,7 +213,7 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
             <?php endforeach; ?>
             <li class="pt-2">
                 <a href="index.php#iletisim"
-                   class="block text-center rounded-md bg-signal hover:bg-signalDim px-3 py-2 text-base font-semibold text-white transition-colors">
+                   class="btn-glow block text-center rounded-md bg-signal hover:bg-signalDim px-3 py-2 text-base font-bold text-abyss">
                     Teklif Al
                 </a>
             </li>

@@ -18,38 +18,48 @@ require __DIR__ . '/header.php';
 ?>
 
 <!-- ============================================================
-     1. HERO
-     Antrasit -> gece mavisi degrade zemin + teknik ızgara deseni
+     1. HERO (Sinematik)
+     Tam ekran arka plan görseli + koyu overlay + teknik ızgara.
+     GÖRSEL: assets/hero.jpg olarak yüksekte çalışan bir işçi /
+     ağ montajı fotoğrafı koy (min 1920px genişlik, WebP tercih).
+     Görsel yoksa degrade zemin tek başına da premium durur.
 ============================================================= -->
-<section class="relative bg-gradient-to-br from-ink via-anthracite to-midnight overflow-hidden">
+<section class="relative min-h-[92vh] flex items-center overflow-hidden bg-abyss"
+         style="background-image:
+                    linear-gradient(to bottom, rgba(11,14,19,.85) 0%, rgba(11,14,19,.62) 50%, rgba(11,14,19,.96) 100%),
+                    url('assets/hero.jpg');
+                background-size: cover;
+                background-position: center;">
     <div class="absolute inset-0 blueprint-grid" aria-hidden="true"></div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-40">
+    <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <!-- Teknik etiket (eyebrow) -->
-        <p class="font-mono text-xs sm:text-sm tracking-[0.25em] uppercase text-signal mb-6">
+        <p class="font-mono text-xs sm:text-sm tracking-[0.3em] uppercase text-signal mb-8">
             Güvenlik Ağı &middot; File Montajı &middot; Düşüş Koruma Sistemleri
         </p>
 
-        <!-- Vizyon cümlesi -->
-        <h1 class="font-display font-800 text-4xl sm:text-5xl lg:text-6xl leading-tight text-white max-w-4xl">
-            Yüksekte çalışmanın
+        <!-- Vizyon cümlesi: devasa, extrabold -->
+        <h1 class="font-display font-extrabold tracking-tight leading-[1.05] text-white
+                   text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] max-w-5xl">
+            Yüksekte çalışmanın<br>
             <span class="text-signal">güvenli adresi.</span>
         </h1>
 
-        <p class="mt-6 text-lg text-gray-400 max-w-2xl leading-relaxed">
+        <!-- Alt başlık: ince ve okunur -->
+        <p class="mt-8 text-lg lg:text-xl font-light text-gray-300 max-w-2xl leading-relaxed">
             <?php echo SITE_NAME; ?>, fabrikalardan şantiyelere, merdiven boşluklarından depo
             raf sistemlerine kadar her alanda standartlara uygun güvenlik ağı ve file montajını
             planlanan sürede, eksiksiz teslim eder.
         </p>
 
         <!-- CTA Butonları -->
-        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+        <div class="mt-12 flex flex-col sm:flex-row gap-4">
             <a href="#iletisim-form"
-               class="inline-flex justify-center items-center rounded-md bg-signal hover:bg-signalDim px-7 py-3.5 text-base font-semibold text-white transition-colors">
+               class="btn-glow inline-flex justify-center items-center rounded-lg bg-signal hover:bg-signalDim px-8 py-4 text-base font-bold text-abyss hover:-translate-y-0.5">
                 Proje Teklifi Alın
             </a>
             <a href="#hizmetler"
-               class="inline-flex justify-center items-center rounded-md border border-steel hover:border-signal px-7 py-3.5 text-base font-semibold text-gray-200 hover:text-white transition-colors">
+               class="inline-flex justify-center items-center rounded-lg border border-white/20 hover:border-signal/70 bg-white/5 backdrop-blur-sm px-8 py-4 text-base font-semibold text-gray-200 hover:text-white transition-colors">
                 Hizmetlerimiz
             </a>
         </div>
@@ -58,25 +68,23 @@ require __DIR__ . '/header.php';
 
 <!-- ============================================================
      2. KURUMSAL REFERANSLAR
-     Açık zemin üzerinde logo grid'i. Logolar gri başlar,
-     hover'da renklenir (kurumsal ve temiz bir görünüm).
+     Kutu yok: geniş boşluklu, şeffaf logolar. Varsayılan %50
+     opak + grayscale; hover'da anında renkli %100 (CSS: .ref-logo)
 ============================================================= -->
-<section id="referanslar" class="bg-white border-b border-mist">
+<section id="referanslar" class="bg-abyss border-y border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <p class="font-mono text-xs tracking-[0.25em] uppercase text-signal text-center mb-3">Referanslar</p>
-        <h2 class="font-display font-bold text-3xl text-ink text-center">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-signal text-center mb-3">Referanslar</p>
+        <h2 class="font-display font-bold text-3xl text-white text-center">
             Global markaların çözüm ortağı
         </h2>
 
-        <div class="mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-mist border border-mist rounded-xl overflow-hidden">
+        <div class="mt-16 flex flex-wrap items-center justify-center gap-x-16 gap-y-12 sm:gap-x-20">
             <?php foreach ($references as $ref): ?>
-                <div class="bg-white flex items-center justify-center h-32 px-6 group ref-cell">
-                    <img src="<?php echo $ref['logo']; ?>"
-                         alt="<?php echo htmlspecialchars($ref['name']); ?>"
-                         loading="lazy" decoding="async" width="160" height="48"
-                         class="ref-logo max-h-12 w-auto grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
-                         onerror="this.outerHTML='<span class=\'font-display font-semibold text-gray-400 group-hover:text-ink transition-colors\'><?php echo htmlspecialchars($ref['name']); ?></span>';">
-                </div>
+                <img src="<?php echo $ref['logo']; ?>"
+                     alt="<?php echo htmlspecialchars($ref['name']); ?>"
+                     loading="lazy" decoding="async" width="160" height="40"
+                     class="ref-logo h-8 sm:h-10 w-auto"
+                     onerror="this.outerHTML='<span class=\'ref-logo font-display font-semibold text-lg text-gray-400\'><?php echo htmlspecialchars($ref['name']); ?></span>';">
             <?php endforeach; ?>
         </div>
     </div>
@@ -86,10 +94,10 @@ require __DIR__ . '/header.php';
      3. HİZMETLER
      Açık gri zemin üzerinde kart grid'i.
 ============================================================= -->
-<section id="hizmetler" class="bg-fog">
+<section id="hizmetler" class="bg-ink">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <p class="font-mono text-xs tracking-[0.25em] uppercase text-signal mb-3">Hizmetler</p>
-        <h2 class="font-display font-bold text-3xl text-ink max-w-xl">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-signal mb-3">Hizmetler</p>
+        <h2 class="font-display font-bold text-3xl lg:text-4xl text-white max-w-xl">
             Keşiften montaja, her noktada tam koruma
         </h2>
 
@@ -108,21 +116,23 @@ require __DIR__ . '/header.php';
             ];
             ?>
             <?php foreach ($services as $i => $service): ?>
-                <article class="service-card bg-white rounded-xl border border-mist p-7 hover:border-signal hover:shadow-lg hover:shadow-signal/10 flex flex-col">
-                    <div class="service-icon h-12 w-12 rounded-lg bg-midnight flex items-center justify-center mb-6">
-                        <svg class="h-6 w-6 text-signal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <!-- Glassmorphism kart: yarı şeffaf zemin + blur + ince kenarlık -->
+                <article class="service-card bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/10 p-8 hover:border-signal/60 flex flex-col">
+                    <!-- Büyük ikon: turuncu, hafif ışımalı zemin -->
+                    <div class="service-icon h-24 w-24 rounded-2xl bg-signal/10 ring-1 ring-signal/25 flex items-center justify-center mb-8">
+                        <svg class="h-14 w-14 text-signal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.25">
                             <?php echo $icons[$service['icon']] ?? $icons['net']; ?>
                         </svg>
                     </div>
-                    <h3 class="font-display font-semibold text-lg text-ink mb-2">
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">
                         <?php echo htmlspecialchars($service['title']); ?>
                     </h3>
-                    <p class="text-sm text-gray-600 leading-relaxed flex-1">
+                    <p class="text-sm text-gray-400 leading-relaxed flex-1">
                         <?php echo htmlspecialchars($service['desc']); ?>
                     </p>
                     <!-- Modal tetikleyici: içerik JS'e data attribute ile taşınır -->
                     <button type="button"
-                            class="service-detail-btn mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-signal hover:text-signalDim transition-colors self-start"
+                            class="service-detail-btn mt-7 inline-flex items-center gap-1.5 text-sm font-semibold text-signal hover:text-signalDim transition-colors self-start"
                             data-title="<?php echo htmlspecialchars($service['title']); ?>"
                             data-details="<?php echo htmlspecialchars($service['details']); ?>">
                         Detayları Gör
@@ -139,64 +149,73 @@ require __DIR__ . '/header.php';
      contact-handler.php'ye POST eder. Handler işlem sonrası
      bu sayfaya ?form=success veya ?form=error ile döner.
 ============================================================= -->
-<section id="iletisim-form" class="bg-white border-t border-mist">
+<!-- ============================================================
+     4. TEKLİF FORMU (Premium koyu kart)
+     Inputlar kenarlıksız; focus'ta turuncu aydınlanma (.premium-input)
+============================================================= -->
+<section id="iletisim-form" class="bg-abyss border-t border-white/5">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <p class="font-mono text-xs tracking-[0.25em] uppercase text-signal text-center mb-3">Teklif</p>
-        <h2 class="font-display font-bold text-3xl text-ink text-center">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-signal text-center mb-3">Teklif</p>
+        <h2 class="font-display font-bold text-3xl lg:text-4xl text-white text-center">
             Projeniz için teklif isteyin
         </h2>
-        <p class="mt-4 text-gray-600 text-center">
+        <p class="mt-4 text-gray-400 text-center">
             Formu doldurun, ekibimiz en kısa sürede size dönüş yapsın.
         </p>
 
-        <!-- Dinamik durum mesajı (AJAX yanıtına göre JS doldurur) -->
-        <div id="form-status" class="status-hidden mt-8 hidden rounded-lg border px-4 py-3 text-sm" role="alert" aria-live="polite"></div>
+        <!-- Form kartı: koyu, yuvarlatılmış, derin gölgeli kapsayıcı -->
+        <div class="mt-12 bg-anthracite/80 backdrop-blur rounded-2xl border border-white/5 shadow-2xl shadow-black/50 p-6 sm:p-10">
 
-        <form id="quote-form" action="contact-handler.php" method="POST" novalidate
-              class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <!-- CSRF koruması -->
-            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
-            <!-- Bot koruması (honeypot): İnsanlar bu alanı görmez, botlar doldurur -->
-            <input type="text" name="website" tabindex="-1" autocomplete="off"
-                   class="hidden" aria-hidden="true">
+            <!-- Dinamik durum mesajı (AJAX yanıtına göre JS doldurur) -->
+            <div id="form-status" class="status-hidden mb-8 hidden rounded-lg border px-4 py-3 text-sm" role="alert" aria-live="polite"></div>
 
-            <div>
-                <label for="name" class="block text-sm font-medium text-ink mb-1.5">Ad Soyad *</label>
-                <input type="text" id="name" name="name" required maxlength="100"
-                       class="w-full rounded-md border border-mist bg-fog px-4 py-2.5 text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none transition">
-            </div>
-            <div>
-                <label for="company" class="block text-sm font-medium text-ink mb-1.5">Firma</label>
-                <input type="text" id="company" name="company" maxlength="100"
-                       class="w-full rounded-md border border-mist bg-fog px-4 py-2.5 text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none transition">
-            </div>
-            <div>
-                <label for="email" class="block text-sm font-medium text-ink mb-1.5">E-posta *</label>
-                <input type="email" id="email" name="email" required maxlength="150"
-                       class="w-full rounded-md border border-mist bg-fog px-4 py-2.5 text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none transition">
-            </div>
-            <div>
-                <label for="phone" class="block text-sm font-medium text-ink mb-1.5">Telefon</label>
-                <input type="tel" id="phone" name="phone" maxlength="20"
-                       class="w-full rounded-md border border-mist bg-fog px-4 py-2.5 text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none transition">
-            </div>
-            <div class="sm:col-span-2">
-                <label for="message" class="block text-sm font-medium text-ink mb-1.5">Proje Detayı *</label>
-                <textarea id="message" name="message" rows="5" required maxlength="3000"
-                          class="w-full rounded-md border border-mist bg-fog px-4 py-2.5 text-sm focus:border-signal focus:ring-1 focus:ring-signal outline-none transition resize-y"></textarea>
-            </div>
-            <div class="sm:col-span-2">
-                <button type="submit" id="quote-submit"
-                        class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-md bg-signal hover:bg-signalDim px-8 py-3 text-base font-semibold text-white transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
-                    <span id="quote-submit-text">Teklif Talebi Gönder</span>
-                    <!-- Yükleniyor spinner'ı (JS gösterir/gizler) -->
-                    <svg id="quote-spinner" class="hidden h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
-                    </svg>
-                </button>
-            </div>
-        </form>
+            <form id="quote-form" action="contact-handler.php" method="POST" novalidate
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- CSRF koruması -->
+                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <!-- Bot koruması (honeypot): İnsanlar bu alanı görmez, botlar doldurur -->
+                <input type="text" name="website" tabindex="-1" autocomplete="off"
+                       class="hidden" aria-hidden="true">
+
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Ad Soyad *</label>
+                    <input type="text" id="name" name="name" required maxlength="100"
+                           class="premium-input w-full rounded-lg bg-abyss/70 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none">
+                </div>
+                <div>
+                    <label for="company" class="block text-sm font-medium text-gray-300 mb-2">Firma</label>
+                    <input type="text" id="company" name="company" maxlength="100"
+                           class="premium-input w-full rounded-lg bg-abyss/70 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">E-posta *</label>
+                    <input type="email" id="email" name="email" required maxlength="150"
+                           class="premium-input w-full rounded-lg bg-abyss/70 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none">
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Telefon</label>
+                    <input type="tel" id="phone" name="phone" maxlength="20"
+                           class="premium-input w-full rounded-lg bg-abyss/70 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none">
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Proje Detayı *</label>
+                    <textarea id="message" name="message" rows="5" required maxlength="3000"
+                              class="premium-input w-full rounded-lg bg-abyss/70 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none resize-y"></textarea>
+                </div>
+                <div class="sm:col-span-2">
+                    <!-- Tam genişlik, kalın, hover'da büyüyen + ışıyan buton -->
+                    <button type="submit" id="quote-submit"
+                            class="btn-glow w-full inline-flex justify-center items-center gap-2 rounded-lg bg-signal hover:bg-signalDim px-8 py-4 text-base font-bold text-abyss hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100">
+                        <span id="quote-submit-text">Teklif Talebi Gönder</span>
+                        <!-- Yükleniyor spinner'ı (JS gösterir/gizler) -->
+                        <svg id="quote-spinner" class="hidden h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </section>
 
@@ -207,21 +226,21 @@ require __DIR__ . '/header.php';
 ============================================================= -->
 <div id="service-modal" class="modal-hidden fixed inset-0 z-[60] hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <!-- Arka plan karartması -->
-    <div class="modal-backdrop absolute inset-0 bg-ink/70 backdrop-blur-sm" data-modal-close></div>
+    <div class="modal-backdrop absolute inset-0 bg-abyss/80 backdrop-blur-sm" data-modal-close></div>
     <!-- Panel -->
     <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-        <div class="modal-panel pointer-events-auto w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div class="modal-panel pointer-events-auto w-full max-w-lg bg-anthracite rounded-2xl border border-white/10 shadow-2xl shadow-black/60 overflow-hidden">
             <div class="flex items-start justify-between gap-4 px-7 pt-7">
-                <h3 id="modal-title" class="font-display font-bold text-xl text-ink"></h3>
+                <h3 id="modal-title" class="font-display font-bold text-xl text-white"></h3>
                 <button type="button" data-modal-close aria-label="Kapat"
-                        class="shrink-0 rounded-md p-1.5 text-gray-400 hover:text-ink hover:bg-fog transition-colors">
+                        class="shrink-0 rounded-md p-1.5 text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <div id="modal-body" class="px-7 py-5 text-sm text-gray-600 leading-relaxed whitespace-pre-line max-h-[60vh] overflow-y-auto"></div>
+            <div id="modal-body" class="px-7 py-5 text-sm text-gray-300 leading-relaxed whitespace-pre-line max-h-[60vh] overflow-y-auto"></div>
             <div class="px-7 pb-7">
                 <a href="#iletisim-form" data-modal-close
-                   class="inline-flex items-center rounded-md bg-signal hover:bg-signalDim px-5 py-2.5 text-sm font-semibold text-white transition-colors">
+                   class="btn-glow inline-flex items-center rounded-lg bg-signal hover:bg-signalDim px-5 py-2.5 text-sm font-bold text-abyss">
                     Bu hizmet için teklif al
                 </a>
             </div>
@@ -246,9 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Durum mesajını yumuşak geçişle göster
     function showStatus(ok, msg) {
         status.textContent = msg;
-        status.className = 'mt-8 rounded-lg border px-4 py-3 text-sm ' +
-            (ok ? 'border-green-300 bg-green-50 text-green-800'
-                : 'border-red-300 bg-red-50 text-red-800');
+        status.className = 'mb-8 rounded-lg border px-4 py-3 text-sm ' +
+            (ok ? 'border-green-500/40 bg-green-500/10 text-green-300'
+                : 'border-red-500/40 bg-red-500/10 text-red-300');
         // Geçiş animasyonu için iki adımda class değişimi
         status.classList.add('status-hidden');
         requestAnimationFrame(() => status.classList.remove('status-hidden'));

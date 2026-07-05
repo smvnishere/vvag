@@ -5,8 +5,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: '#15181D', anthracite: '#1E232B', steel: '#2A3038',
-        midnight: '#0E1A2B', signal: '#3D7DD8', signalDim: '#2C5FA8',
+        abyss: '#0B0E13', ink: '#12161D', anthracite: '#1B212B',
+        steel: '#2B333F', midnight: '#0E141D',
+        signal: '#FF7A00', signalDim: '#FF9633',
         fog: '#F4F5F7', mist: '#E6E8EC',
       },
       fontFamily: {
