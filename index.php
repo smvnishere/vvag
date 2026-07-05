@@ -12,7 +12,14 @@
  */
 
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/includes/csrf.php'; // CSRF token üretimi için
+require_once __DIR__ . '/includes/csrf.php';
+
+// KRİTİK: Token'ı (dolayısıyla session'ı) HTML çıktısı başlamadan
+// ÖNCE üret. session_start() cookie'yi HTTP header ile gönderir;
+// çıktı başladıktan sonra çağrılırsa cookie gitmez ve CSRF
+// doğrulaması her seferinde 403 verir.
+$csrf = csrf_token();
+
 $page_title = SITE_NAME . ' — ' . SITE_TAGLINE;
 require __DIR__ . '/header.php';
 ?>
@@ -171,8 +178,8 @@ require __DIR__ . '/header.php';
 
             <form id="quote-form" action="contact-handler.php" method="POST" novalidate
                   class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <!-- CSRF koruması -->
-                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <!-- CSRF koruması (token sayfa başında üretildi) -->
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>">
                 <!-- Bot koruması (honeypot): İnsanlar bu alanı görmez, botlar doldurur -->
                 <input type="text" name="website" tabindex="-1" autocomplete="off"
                        class="hidden" aria-hidden="true">
