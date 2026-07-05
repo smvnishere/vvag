@@ -50,7 +50,7 @@ $references = [
     ['name' => 'Aviagen',  'logo' => 'assets/refs/aviagen.png'],
     ['name' => 'Altaş Elektrik', 'logo' => 'assets/refs/altas.png'],
     ['name' => 'Optimum AVM', 'logo' => 'assets/refs/optimum.png'],
-    ['name' => 'Caesar', 'logo' => 'assets/refs/Caesar'],
+    ['name' => 'Caesar', 'logo' => 'assets/refs/Caesar.png'],
     ['name' => 'Muradiye', 'logo' => 'assets/refs/muradiye.png'],
 ];
 
