@@ -65,7 +65,7 @@
                 -->
                 <div class="w-full h-48 rounded-lg border border-steel bg-anthracite flex flex-col items-center justify-center gap-2 text-gray-500">
                     <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>
-                    <span class="font-mono text-xs">Google Maps iframe buraya</span>
+                    <span class="font-mono text-xs"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3055.5076851932645!2d32.50811121217305!3d40.01944317138759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d337394f5326df%3A0x5e6b89c0da91d58!2sVURAL%20F%C4%B0LE!5e0!3m2!1str!2str!4v1783280570793!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></span>
                 </div>
             </div>
         </div>
