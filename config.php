@@ -46,7 +46,7 @@ $nav_links = [
 // --- Kurumsal Referanslar ---
 // Logo dosyalarını assets/refs/ klasörüne at, buraya yolunu yaz.
 $references = [
-    ['name' => 'Volvo',    'logo' => 'assets/refs/volvo.png'],
+    ['name' => 'Volvo',    'logo' => 'assets/refs/volvo.jpg'],
     ['name' => 'Aviagen',  'logo' => 'assets/refs/aviagen.png'],
     ['name' => 'Altaş Elektrik', 'logo' => 'assets/refs/altas.png'],
     ['name' => 'Optimum AVM', 'logo' => 'assets/refs/optimum.png'],
