@@ -20,10 +20,10 @@ define('SITE_URL',     'https://www.vuralag.com'); // Kendi domainini yaz
 define('LOGO_PATH',    'assets/logo.png');          // Transparan PNG logo yolu
 
 // --- İletişim Bilgileri ---
-define('CONTACT_PHONE',   '+90 (312) 000 00 00');
-define('CONTACT_PHONE_RAW', '+903120000000'); // tel: linki için boşluksuz format
+define('CONTACT_PHONE',   '+90 (541) 802 39 38');
+define('CONTACT_PHONE_RAW', '+905418023938'); // tel: linki için boşluksuz format
 define('CONTACT_EMAIL',   'info@vuralag.com');
-define('CONTACT_ADDRESS', 'Organize Sanayi Bölgesi, 1. Cadde No: 00, Sincan / Ankara');
+define('CONTACT_ADDRESS', 'Fevzi Çakmak, 16. Cadde no:21, 06370 Sincan/Ankara');
 
 // --- Form gönderimlerinin ulaşacağı e-posta ---
 define('FORM_RECIPIENT', 'smvnhere@gmail.com');
