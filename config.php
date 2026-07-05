@@ -50,8 +50,8 @@ $references = [
     ['name' => 'Aviagen',  'logo' => 'assets/refs/aviagen.png'],
     ['name' => 'Altaş Elektrik', 'logo' => 'assets/refs/ref3.png'],
     ['name' => 'Optimum AVM', 'logo' => 'assets/refs/ref4.png'],
-    ['name' => 'Caesar Resorts', 'logo' => 'assets/refs/ref5.png'],
-    ['name' => 'Muradiye', 'logo' => 'assets/refs/ref6.png'],
+    ['name' => 'Caesar', 'logo' => 'assets/refs/Caesar'],
+    ['name' => 'Muradiye', 'logo' => 'assets/refs/muradiye.png'],
 ];
 
 // --- Hizmetler ---
