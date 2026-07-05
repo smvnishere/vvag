@@ -22,7 +22,7 @@ define('LOGO_PATH',    'assets/logo.png');          // Transparan PNG logo yolu
 // --- İletişim Bilgileri ---
 define('CONTACT_PHONE',   '+90 (541) 802 39 38');
 define('CONTACT_PHONE_RAW', '+905418023938'); // tel: linki için boşluksuz format
-define('CONTACT_EMAIL',   'info@vuralag.com');
+define('CONTACT_EMAIL',   'vural_ag@outlook.com');
 define('CONTACT_ADDRESS', 'Fevzi Çakmak, 16. Cadde no:21, 06370 Sincan/Ankara');
 
 // --- Form gönderimlerinin ulaşacağı e-posta ---
