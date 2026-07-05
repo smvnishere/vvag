@@ -48,8 +48,8 @@ $nav_links = [
 $references = [
     ['name' => 'Volvo',    'logo' => 'assets/refs/volvo.png'],
     ['name' => 'Aviagen',  'logo' => 'assets/refs/aviagen.png'],
-    ['name' => 'Altaş Elektrik', 'logo' => 'assets/refs/ref3.png'],
-    ['name' => 'Optimum AVM', 'logo' => 'assets/refs/ref4.png'],
+    ['name' => 'Altaş Elektrik', 'logo' => 'assets/refs/altas.png'],
+    ['name' => 'Optimum AVM', 'logo' => 'assets/refs/optimum.png'],
     ['name' => 'Caesar', 'logo' => 'assets/refs/Caesar'],
     ['name' => 'Muradiye', 'logo' => 'assets/refs/muradiye.png'],
 ];
