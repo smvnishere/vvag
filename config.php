@@ -48,10 +48,10 @@ $nav_links = [
 $references = [
     ['name' => 'Volvo',    'logo' => 'assets/refs/volvo.png'],
     ['name' => 'Aviagen',  'logo' => 'assets/refs/aviagen.png'],
-    ['name' => 'Referans 3', 'logo' => 'assets/refs/ref3.png'],
-    ['name' => 'Referans 4', 'logo' => 'assets/refs/ref4.png'],
-    ['name' => 'Referans 5', 'logo' => 'assets/refs/ref5.png'],
-    ['name' => 'Referans 6', 'logo' => 'assets/refs/ref6.png'],
+    ['name' => 'Altaş Elektrik', 'logo' => 'assets/refs/ref3.png'],
+    ['name' => 'Optimum AVM', 'logo' => 'assets/refs/ref4.png'],
+    ['name' => 'Caesar Resorts', 'logo' => 'assets/refs/ref5.png'],
+    ['name' => 'Muradiye', 'logo' => 'assets/refs/ref6.png'],
 ];
 
 // --- Hizmetler ---
