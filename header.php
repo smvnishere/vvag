@@ -26,7 +26,41 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?></title>
-    <meta name="description" content="<?php echo SITE_NAME . ' - ' . SITE_TAGLINE; ?>. Volvo, Aviagen gibi global markaların çözüm ortağı.">
+    <meta name="description" content="<?php echo htmlspecialchars($meta_desc ?? SITE_NAME . ' — ' . SITE_TAGLINE . '. Ankara merkezli; fabrika, şantiye ve bina içi güvenlik ağı, file montajı ve düşüş koruma sistemleri.'); ?>">
+
+    <!-- SEO: Canonical (kopya içerik sinyalini önler) -->
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical ?? SITE_URL . '/'); ?>">
+
+    <!-- SEO: Open Graph (WhatsApp/sosyal medya paylaşım kartı) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="<?php echo SITE_NAME; ?>">
+    <meta property="og:title" content="<?php echo htmlspecialchars($page_title); ?>">
+    <meta property="og:description" content="<?php echo SITE_TAGLINE; ?>. Fabrika, şantiye ve bina içi güvenlik ağı montajı.">
+    <meta property="og:url" content="<?php echo SITE_URL; ?>/">
+    <meta property="og:image" content="<?php echo SITE_URL; ?>/assets/og-image.jpg">
+    <meta property="og:locale" content="tr_TR">
+
+    <!-- SEO: JSON-LD Yapısal Veri (Google'ın işletmeyi tanıması için) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "<?php echo SITE_NAME; ?>",
+        "description": "<?php echo SITE_TAGLINE; ?>",
+        "url": "<?php echo SITE_URL; ?>",
+        "telephone": "<?php echo CONTACT_PHONE_RAW; ?>",
+        "email": "<?php echo CONTACT_EMAIL; ?>",
+        "image": "<?php echo SITE_URL; ?>/assets/og-image.jpg",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "<?php echo CONTACT_ADDRESS; ?>",
+            "addressLocality": "Ankara",
+            "addressCountry": "TR"
+        },
+        "areaServed": "TR",
+        "knowsAbout": ["güvenlik ağı montajı", "file montajı", "inşaat güvenlik ağı", "düşüş koruma sistemleri"]
+    }
+    </script>
 
     <!-- Google Fonts: Saira (başlık) + Inter (metin) + IBM Plex Mono (teknik etiketler) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,14 +142,16 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
             transform: scale(1.06) rotate(-3deg);
         }
 
-        /* --- Referans logoları: gri %50 -> renkli %100, pürüzsüz geçiş --- */
+        /* --- Referans logoları: koyu zeminde beyaz silüet, hover'da orijinal renk ---
+           brightness(0) invert(1) her logoyu bembeyaz silüete çevirir;
+           böylece siyah/koyu logolar koyu zeminde kaybolmaz. */
         .ref-logo {
-            filter: grayscale(1);
-            opacity: .5;
+            filter: brightness(0) invert(1);
+            opacity: .55;
             transition: filter .35s ease, opacity .35s ease, transform .35s ease;
         }
         .ref-logo:hover {
-            filter: grayscale(0);
+            filter: none;
             opacity: 1;
             transform: scale(1.05);
         }
