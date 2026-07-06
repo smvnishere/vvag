@@ -142,16 +142,15 @@ $page_title = $page_title ?? SITE_NAME . ' — ' . SITE_TAGLINE;
             transform: scale(1.06) rotate(-3deg);
         }
 
-        /* --- Referans logoları: koyu zeminde beyaz silüet, hover'da orijinal renk ---
-           brightness(0) invert(1) her logoyu bembeyaz silüete çevirir;
-           böylece siyah/koyu logolar koyu zeminde kaybolmaz. */
+        /* --- Referans logoları: her zaman beyaz silüet ---
+           Hover'da orijinal renge dönmüyoruz çünkü siyah logolar
+           (Altaş gibi) koyu zeminde kaybolur. Hover = tam parlaklık. */
         .ref-logo {
             filter: brightness(0) invert(1);
             opacity: .55;
-            transition: filter .35s ease, opacity .35s ease, transform .35s ease;
+            transition: opacity .35s ease, transform .35s ease;
         }
         .ref-logo:hover {
-            filter: none;
             opacity: 1;
             transform: scale(1.05);
         }
