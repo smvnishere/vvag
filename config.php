@@ -26,7 +26,8 @@ define('CONTACT_EMAIL',   'vural_ag@outlook.com');
 define('CONTACT_ADDRESS', 'Fevzi Çakmak, 16. Cadde no:21, 06370 Sincan/Ankara');
 
 // --- Form gönderimlerinin ulaşacağı e-posta ---
-define('FORM_RECIPIENT', 'smvnhere@gmail.com');
+// Render > Environment'tan FORM_RECIPIENT ile değiştirilebilir.
+define('FORM_RECIPIENT', getenv('FORM_RECIPIENT') ?: 'smvnhere@gmail.com');
 
 // --- Sosyal Medya (boş bırakılan gösterilmez) ---
 $social_links = [
@@ -46,12 +47,12 @@ $nav_links = [
 // --- Kurumsal Referanslar ---
 // Logo dosyalarını assets/refs/ klasörüne at, buraya yolunu yaz.
 $references = [
-    ['name' => 'Volvo',    'logo' => 'assets/refs/volvo.png'],
-    ['name' => 'Aviagen',  'logo' => 'assets/refs/aviagen.png'],
+    ['name' => 'Volvo',          'logo' => 'assets/refs/volvo.png'],
+    ['name' => 'Aviagen',        'logo' => 'assets/refs/aviagen.png'],
     ['name' => 'Altaş Elektrik', 'logo' => 'assets/refs/altas.png'],
-    ['name' => 'Optimum AVM', 'logo' => 'assets/refs/optimum.png'],
-    ['name' => 'Caesar', 'logo' => 'assets/refs/Caesar.png'],
-    ['name' => 'Muradiye', 'logo' => 'assets/refs/muradiye.png'],
+    ['name' => 'Optimum AVM',    'logo' => 'assets/refs/optimum.png'],
+    ['name' => 'Caesar',         'logo' => 'assets/refs/Caesar.png'],
+    ['name' => 'Muradiye',       'logo' => 'assets/refs/muradiye.png'],
 ];
 
 // --- Hizmetler ---
@@ -109,3 +110,59 @@ define('SMTP_SECURE', getenv('SMTP_SECURE') ?: 'tls'); // 'tls' (587) veya 'ssl'
 define('RECAPTCHA_SITE_KEY',   getenv('RECAPTCHA_SITE_KEY')   ?: '');
 define('RECAPTCHA_SECRET_KEY', getenv('RECAPTCHA_SECRET_KEY') ?: '');
 define('RECAPTCHA_MIN_SCORE',  0.5); // 0-1 arası; düşük skor = bot şüphesi
+
+// ============================================================
+//  SEO HİZMET SAYFALARI
+// ============================================================
+// Her anahtar kelime grubu için ayrı bir sayfa üretilir:
+//   site.com/hizmet.php?slug=balkon-filesi
+//   (.htaccess aktifse: site.com/balkon-filesi)
+// Yeni kelimede sıralama almak için buraya yeni blok ekle,
+// sitemap.xml'e URL'sini yaz, bitti.
+// ============================================================
+$seo_pages = [
+    'balkon-filesi' => [
+        'title'     => 'Balkon Filesi Montajı Ankara | ' . SITE_NAME,
+        'meta_desc' => 'Ankara balkon filesi montajı: kuş ve güvercin önleyici, çocuk güvenlikli balkon ağı. Ücretsiz keşif, garantili montaj. Hemen teklif alın.',
+        'h1'        => 'Balkon Filesi Montajı',
+        'intro'     => 'Balkonunuzu güvercin ve kuş kirliliğinden koruyan, çocuklarınız ve evcil hayvanlarınız için güvenli hale getiren profesyonel balkon filesi montajı yapıyoruz. Ankara genelinde ücretsiz keşif sonrası balkonunuza özel ölçüyle kurulum tamamlanır.',
+        'sections'  => [
+            'Neden Balkon Filesi?' => "Açık balkonlar güvercin ve kuşların tünemesi nedeniyle sürekli kirlenir; kuş dışkısı hem görüntü kirliliği yaratır hem sağlık riski taşır. Balkon filesi bu sorunu kalıcı olarak çözer. Aynı zamanda küçük çocuklu ve evcil hayvanlı evlerde düşme riskini ortadan kaldırarak balkonu güvenli bir yaşam alanına çevirir.",
+            'Kullandığımız Malzeme' => "UV katkılı, güneşe ve yağmura dayanıklı polietilen file kullanıyoruz; sararma ve çürüme yapmaz. Şeffafa yakın renk seçenekleri sayesinde manzaranızı kapatmaz, binanın dış görünümünü bozmaz. Paslanmaz halka ve çelik gergi teli ile monte edilir, yıllarca sarkma yapmaz.",
+            'Montaj Süreci' => "Ücretsiz keşifte balkonunuzun ölçüsü alınır ve net fiyat verilir. Montaj çoğu balkonda kısa sürede, delme-kırma olmadan tamamlanır. İşçilik ve malzeme garantilidir.",
+        ],
+    ],
+    'kedi-filesi' => [
+        'title'     => 'Kedi Filesi - Pencere ve Balkon Kedi Güvenlik Ağı | ' . SITE_NAME,
+        'meta_desc' => 'Kedi filesi montajı: pencere ve balkonlar için yırtılmaz kedi güvenlik ağı. Kediniz düşmesin, pencereniz açık kalsın. Ankara genelinde montaj.',
+        'h1'        => 'Kedi Filesi & Kedi Güvenlik Ağı',
+        'intro'     => 'Yüksek kat penceresi ve balkonlar kediler için ciddi düşme riski taşır. Kedi filesi, pencerelerinizi ve balkonunuzu gönül rahatlığıyla açık bırakmanızı sağlar; kediniz özgürce gezer, siz güvende olduğunu bilirsiniz.',
+        'sections'  => [
+            'Kedi Güvenliği İçin Neden Şart?' => "Veteriner hekimlerin \"yüksek kat sendromu\" olarak adlandırdığı düşme vakaları, özellikle ilkbahar ve yaz aylarında açık pencerelerden kaynaklanır. Kediler dengesine güvenir ama sineklik ve standart pencere onları taşımaz. Kedi filesi bu riski sıfıra indirir.",
+            'Standart Fileden Farkı' => "Kedi filesi, normal balkon filesinden daha kalın iplikli ve pençe darbelerine dayanıklı dokuma ile üretilir. Kediniz tırmansa, assa, ısırsa bile yırtılmaz. Gerdirmeli montaj sayesinde kedi ağırlığıyla esneyip boşluk oluşturmaz.",
+            'Nerelere Uygulanır?' => "Pencere içleri, balkonlar, teras kenarları ve merdiven korkulukları başlıca uygulama alanlarıdır. Kiracıysanız delmesiz montaj seçeneklerimizi sorabilirsiniz; taşınırken iz bırakmadan sökülür.",
+        ],
+    ],
+    'guvenlik-filesi' => [
+        'title'     => 'Güvenlik Filesi ve Güvenlik Ağı Montajı | ' . SITE_NAME,
+        'meta_desc' => 'Güvenlik filesi montajı: fabrika, depo, şantiye, merdiven boşluğu ve her alanda TS EN 1263 standardında güvenlik ağı. Keşif ücretsiz.',
+        'h1'        => 'Güvenlik Filesi & Güvenlik Ağı Montajı',
+        'intro'     => 'Endüstriyel tesislerden konutlara kadar her alanda, insan ve malzeme düşmesine karşı koruma sağlayan güvenlik filesi sistemleri kuruyoruz. Volvo ve Aviagen gibi global üreticilerin tesislerinde edindiğimiz saha tecrübesini her ölçekte projeye taşıyoruz.',
+        'sections'  => [
+            'Uygulama Alanları' => "Fabrika ve depolarda raf arkası malzeme düşme koruması, şantiyelerde yatay ve dikey iş güvenliği ağları, bina içlerinde merdiven ve asansör boşluğu koruması, spor tesislerinde saha çevresi fileleri başlıca çalışma alanlarımızdır.",
+            'Standart ve Sertifikasyon' => "İş güvenliği amaçlı ağlarda TS EN 1263-1 standardına uygun, test sertifikalı malzeme kullanıyoruz. Montaj sonrası talep halinde uygulama raporu düzenlenir; İSG denetimlerinde belgeleriniz hazır olur.",
+            'Keşif ve Projelendirme' => "Her alanın yük ve risk profili farklıdır. Ücretsiz keşifte alanınıza uygun ağ tipi, göz aralığı ve bağlantı sistemi belirlenir; size net fiyat ve süre verilir.",
+        ],
+    ],
+    'insaat-guvenlik-agi' => [
+        'title'     => 'İnşaat Güvenlik Ağı Montajı | ' . SITE_NAME,
+        'meta_desc' => 'İnşaat güvenlik ağı: şantiyelerde cephe, döşeme kenarı ve boşluklar için TS EN 1263 uyumlu yatay-dikey güvenlik ağı montajı ve söküm hizmeti.',
+        'h1'        => 'İnşaat Güvenlik Ağı Montajı',
+        'intro'     => 'Şantiyelerde yüksekten düşme, iş kazalarının bir numaralı nedenidir. Cephe, döşeme kenarı ve boşluklarda kurduğumuz güvenlik ağı sistemleriyle hem çalışanlarınızı koruyor hem İSG mevzuatı yükümlülüklerinizi karşılıyoruz.',
+        'sections'  => [
+            'Yatay ve Dikey Sistemler' => "Döşeme kenarlarında ve kat aralarında yatay toplama ağları (catch net), cephelerde dikey koruma ağları uyguluyoruz. Sistem seçimi projenin yapısına ve iş programına göre keşifte belirlenir.",
+            'Şantiye Takvimine Uyum' => "Kat ilerledikçe ağların taşınması ve yeniden kurulumu ekibimizce yapılır; kaba inşaat bitiminde söküm hizmeti veriyoruz. Şantiyenizin temposunu yavaşlatmadan çalışırız.",
+            'Belgelendirme' => "Kullanılan tüm ağlar TS EN 1263-1 test sertifikalıdır. Montaj sonrası uygulama tutanağı düzenlenir; iş güvenliği uzmanınızın dosyasına hazır belge teslim edilir.",
+        ],
+    ],
+];
