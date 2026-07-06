@@ -1,0 +1,7 @@
+# Temiz URL yonlendirmesi: /balkon-filesi -> /hizmet.php?slug=balkon-filesi
+# NOT: Calismasi icin Apache'de AllowOverride All acik olmali.
+# Calismiyorsa linkler zaten hizmet.php?slug=... uzerinden calisir.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z0-9-]+)/?$ hizmet.php?slug=$1 [L,QSA]
