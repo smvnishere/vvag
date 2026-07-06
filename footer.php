@@ -72,15 +72,22 @@
             <!-- Sütun 4: Harita Yer Tutucusu -->
             <div>
                 <h3 class="font-mono text-xs uppercase tracking-[0.2em] text-signal mb-6">Konum</h3>
-                <!--
-                    HARİTA: Google Maps > Paylaş > Harita Yerleştir'den aldığın
-                    iframe kodunu aşağıdaki div'in İÇİNE yapıştır ve
-                    yer tutucu içeriği sil. iframe'e class="w-full h-full rounded-lg" ver.
-                -->
-                <div class="w-full h-48 rounded-lg border border-steel bg-anthracite flex flex-col items-center justify-center gap-2 text-gray-500">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>
-                    <span class="font-mono text-xs">Google Maps iframe buraya</span>
+                <!-- Google Maps: adres bazlı embed (API key gerektirmez) -->
+                <div class="w-full h-48 rounded-lg border border-steel overflow-hidden">
+                    <iframe
+                        src="https://maps.google.com/maps?q=<?php echo urlencode(CONTACT_ADDRESS); ?>&z=15&output=embed"
+                        class="w-full h-full"
+                        style="border:0; filter: invert(90%) hue-rotate(180deg);"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="<?php echo SITE_NAME; ?> Konum"></iframe>
                 </div>
+                <a href="https://maps.app.goo.gl/rFDYd5JtavV29hvH8"
+                   target="_blank" rel="noopener"
+                   class="inline-flex items-center gap-2 mt-4 text-sm text-signal hover:text-signalDim transition-colors">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>
+                    Yol Tarifi Al
+                </a>
             </div>
         </div>
 
